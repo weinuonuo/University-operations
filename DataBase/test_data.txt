@@ -1,0 +1,107 @@
+--创建表
+CREATE TABLE S(stuid char primary key, name char, age int, sex char);
+CREATE TABLE SC(stuid char, courseid char, grade int);
+CREATE TABLE C(courseid char primary key, coursename char, teacher char);
+
+--插入数据到学生表
+INSERT INTO S VALUES ('S1', 'Wang', 20, 'M');
+INSERT INTO S VALUES ('S2', 'Liu', 19, 'F');
+INSERT INTO S VALUES ('S3', 'Chen', 22, 'F');
+INSERT INTO S VALUES ('S4', 'Wu', 19, 'M');
+INSERT INTO S VALUES ('S5', 'Zhao', 21, 'F');
+INSERT INTO S VALUES ('S8', 'Dong', 18, 'M');
+
+
+-- 插入数据到课程表
+INSERT INTO C VALUES ('C1', 'DataBase', 'A');
+INSERT INTO C VALUES ('C2', 'Math', 'B');
+INSERT INTO C VALUES ('C3', 'OpenSystem', 'C');
+INSERT INTO C VALUES ('C4', 'Python', 'D');
+INSERT INTO C VALUES ('C5', 'NS', 'E');
+
+-- 增加列
+ALTER TABLE SC ADD new int;
+ALTER TABLE SC DROP new;
+DROP TABLE SC;
+
+
+-- 插入数据到学习表
+INSERT INTO SC VALUES ('S1', 'C1', 80);
+INSERT INTO SC VALUES ('S1', 'C2', 70);
+INSERT INTO SC VALUES ('S1', 'C3', 85);
+INSERT INTO SC VALUES ('S1', 'C4', 90);
+INSERT INTO SC VALUES ('S1', 'C5', 70);
+INSERT INTO SC VALUES ('S2', 'C1', 85);
+INSERT INTO SC VALUES ('S3', 'C1', 90);
+INSERT INTO SC VALUES ('S3', 'C2', 85);
+INSERT INTO SC VALUES ('S3', 'C3', 95);
+INSERT INTO SC VALUES ('S4', 'C1', 75);
+INSERT INTO SC VALUES ('S4', 'C4', 70);
+INSERT INTO SC VALUES ('S5', 'C1', 70);
+INSERT INTO SC VALUES ('S5', 'C2', 60);
+INSERT INTO SC VALUES ('S5', 'C3', 80);
+INSERT INTO SC VALUES ('S5', 'C5', 65);
+INSERT INTO SC VALUES ('S8', 'C1', 90);
+INSERT INTO SC VALUES ('S8', 'C3', 95);
+
+
+--1.实现全关系选择操作（select * from 关系名）。
+SELECT * FROM SC;
+
+--2.实现单关系的投影操作（select 属性名列表 from 关系名）。
+SELECT courseid, grade FROM SC;
+
+--3.实现单关系的选择操作（select * from 关系名 where 条件表达式）
+SELECT * FROM SC WHERE grade >= 80 and courseid = 'C1';
+
+--4.实现单关系的选择和投影操作（select 属性名列表 from 关系名 where 选择条件）。
+SELECT courseid,grade FROM SC WHERE grade >= 80 and courseid = 'C1';
+
+--5.实现两个关系和多个关系的连接操作select * from 关系名列表 where 连接条件）
+SELECT * FROM SC,C WHERE SC.courseid = C.courseid;
+SELECT * FROM SC,C,S WHERE S.stuid = SC.stuid and SC.courseid = C.courseid;
+
+SELECT S.stuid,SC.grade FROM SC,S WHERE SC.grade > 80;
+
+--6实现两个关系和多个关系的选择和连接操作（select * from 关系名列表 where 选择条件和连接条件）。
+SELECT * FROM SC,C WHERE SC.courseid = C.courseid and C.teacher='B';
+
+--7.实现两个关系和多个关系的投影和连接操作（select 属性名列表 from 关系名列表 where 连接条件）。
+SELECT SC.stuid, SC.grade, C.courseid FROM SC,C WHERE SC.courseid = C.courseid;
+
+--8.实现两个关系和多个关系的选择、投影和连接操作（select 属性名列表 from 关系名列表 where 条件表达式）。
+SELECT SC.stuid, SC.grade, C.courseid FROM SC,C WHERE SC.courseid = C.courseid and C.teacher='B';
+--9.3表连接
+
+SELECT SC.stuid,SC.grade,C.teacher FROM SC,C,S WHERE S.stuid = SC.stuid and SC.courseid = C.courseid and C.teacher = 'B';
+
+
+--更新数据项
+UPDATE S SET age=100 WHERE age>19;
+UPDATE S SET age=22 WHERE sex='F';
+UPDATE S SET sex=M WHERE name='Liu';
+
+
+-- 删除数据项
+
+DELETE FROM SC WHERE grade >= 80;
+DELETE FROM SC WHERE grade >= 80 and courseid = 'C1';
+DELETE FROM SC WHERE stuid = 'S1';
+
+DELETE FROM S WHERE age = 19;
+DELETE FROM S WHERE age=22 and name='Chen';
+DELETE FROM S WHERE name = 'Liu' or age = 19;
+DELETE FROM S WHERE age = 19 and name = 'Liu';
+
+CREATE USER aaa IDENTIFIED BY bbb;
+
+GRANT delete ON DATABASE to aaa;
+GRANT select ON DATABASE to aaa;
+
+CREATE INDEX indexb on S(age);
+
+
+
+What Can I do;
+Who am I;
+=============================================================
