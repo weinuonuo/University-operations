@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
-import sys,getopt
+import sys,getopt,shutil
 
-def readfile(infile,outfile):
-    infile = open(infile,'r').read()
-    open(outfile,'w').write(infile)
+def copyfile(infile,outfile):
+    try:
+        shutil.copy(infile,outfile)
+    except:
+        print('''Can't open this file''')
+        return
+
+def copydir(indir,outdir):
+    try:
+        shutil.copytree(indir,outdir)
+    except:
+        print('This dir is wrong')
 
 def main():
     if len(sys.argv) < 2:
@@ -26,12 +35,24 @@ def main():
                 print("Unknow option.")
         else:
             opts,args = getopt.getopt(sys.argv[1:],"i:o:")
+            input_file,output_file,input_dir,output_dir = '','','',''
             for op,value in opts:
-                if op == "-i":
-                    input_file = value
-                if op == "-o":
-                    output_file = value
-            readfile(input_file,output_file)
+                if op == "-i" :
+                    if '.' in value:
+                        input_file = value
+                    else:
+                        input_dir = value
+                elif op == "-o":
+                    if '.' in value:
+                        output_file = value
+                    else:
+                        output_dir = value
+            if input_file and output_file:
+                copyfile(input_file,output_file)
+            elif input_dir and output_dir:
+                copydir(input_dir,output_dir)
+            else:
+                print('Input Wrong')
     
         
 if __name__ == '__main__':
